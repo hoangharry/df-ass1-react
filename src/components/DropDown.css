@@ -1,0 +1,14 @@
+.iconType {
+    text-align: end;
+    place-items: center;
+    padding: 5px;
+}
+.iconData {
+    place-items: center;
+}
+.groupIcons {
+    align-items: flex-end;
+    display: flex;
+    margin-left: auto;
+    margin-right: 5px;
+}

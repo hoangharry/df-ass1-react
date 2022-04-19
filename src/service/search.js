@@ -1,12 +1,10 @@
 import { Octokit } from "@octokit/core"
 export const getReposOrg = async (org) => {
     const octokit = new Octokit();
-    // const response = await fetch('https://github.com/orgs/dwarvesf/repositories?sort=stargazers')
     const response = await octokit.request("GET /orgs/{org}/repos", {
         org: org,
-        sort: "stars",
     });
-    console.log(response);
+    return response;
 }
 
 export const getReposUser = async (username) => {
@@ -14,25 +12,40 @@ export const getReposUser = async (username) => {
     const response = await octokit.request('GET /users/{username}/repos', {
         username: username
     });
-    console.log(response);
+    return response;
 }
 
-export const getReposOrgByStars = async (org) => {
+export const getReposByStars = async (username, page, isOrigin = false) => {
     const octokit = new Octokit();
+    let query = 'user:' + username;
+    if (!isOrigin) {
+        query = query + '+fork:true';
+    }
     const response = octokit.request("GET /search/repositories", {
-        q: 'org:' + org,
+        q: query,
         sort: 'stars',
         order: 'desc',
+        page: page,
+
     });
-    console.log(response);
+    return response;
 }
 
-export const getReposUserByStars = async (username) => {
+// export const getOriginalRepos = async (username, page) => {
+//     const octokit = new Octokit();
+//     const response = octokit.request("GET /search/repositories", {
+//         q: 'user:' + username,
+//         sort: 'stars',
+//         order: 'desc',
+//         page: page,
+//     });
+//     return response;
+// }
+
+export const checkOrgOrUser = async (kw) => {
     const octokit = new Octokit();
-    const response = octokit.request("GET /search/repositories", {
-        q: 'user:' + username,
-        sort: 'stars',
-        order: 'desc',
+    const response = octokit.request("GET /users/{username}", {
+        username: kw,
     });
-    console.log(response);
+    return response;
 }
